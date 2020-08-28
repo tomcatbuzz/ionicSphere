@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Plugins, Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
@@ -13,18 +12,18 @@ export class AppComponent implements OnInit {
   public selectedIndex = 0;
   public appPages = [
     {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
+      title: 'Home',
+      url: 'home',
+      icon: 'home'
     },
     {
-      title: 'Outbox',
-      url: '/folder/Outbox',
+      title: 'Forecast',
+      url: 'forecast',
       icon: 'paper-plane'
     },
     {
-      title: 'Favorites',
-      url: '/folder/Favorites',
+      title: 'Hourly',
+      url: 'hourly-forecast',
       icon: 'heart'
     },
     {
@@ -46,17 +45,16 @@ export class AppComponent implements OnInit {
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   constructor(
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private platform: Platform    
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      if (Capacitor.isPluginAvailable('SplashScreen')) {
+        Plugins.SplashScreen.hide();
+      }
     });
   }
 

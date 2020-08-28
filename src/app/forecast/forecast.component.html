@@ -1,0 +1,87 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Forecast</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+      size-md="6"
+      offset-md="3"
+      text-center>
+        <h1>
+          <i class="wi wi-barometer"></i> Your Local Weather Forecast
+        </h1>
+        <p>Current Position: {{ lat }} / {{ lng }} </p>
+  
+        <ion-button color="primary" (click)="getForecast()">Get Forecast</ion-button>
+  
+        <h1>Seven Day Forecast</h1>
+      </ion-col>
+      <ion-col 
+        size-md="6" 
+        offset-md="3"
+        text-center
+        *ngIf="isLoading">
+        <ion-spinner name="bubbles" color="primary"></ion-spinner>
+      </ion-col>
+      <!-- <ion-col 
+        size-md="6" 
+        offset-md="3" 
+        *ngIf="!isLoading && (!forecast | async) as f"
+        text-center>
+        <p>No forecast found</p>
+      </ion-col> -->
+      <ion-col size-md="6" offset-md="3" *ngIf="!isLoading && (forecast | async) as f">
+        <ion-list>
+          <ion-item-sliding *ngFor="let day of f.daily.data">
+            <!-- #slidingBooking -->
+            <ion-item>
+              <i [class]="weatherIcon(day.icon)"></i>
+              <ion-label>
+                <h5>{{ day.time * 1000 | date: 'fullDate' }}</h5>
+                <p>{{ day.summary }}</p>
+                <p>{{ day.temperatureHigh | number: '1.0-0' }}°F</p>
+              </ion-label>
+            </ion-item>
+            <!-- <ion-item-options>
+              <ion-item-option color="danger" (click)="onCancelBooking(booking.id, slidingBooking)">
+                <ion-icon name="trash" slot="icon-only"></ion-icon>
+              </ion-item-option>
+            </ion-item-options> -->
+          </ion-item-sliding>
+          <!-- <ion-item-sliding *ngFor="let current of f.currently.data">
+            <i [class]="weatherIcon(day.icon)"></i>
+            <ion-label>
+              <h5>{{ current.temperature }}</h5>
+            </ion-label>
+          </ion-item-sliding> -->
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- <h1>
+    <i class="wi wi-barometer"></i> Your Local Weather Forecast
+  </h1>
+  
+  <p>Current Position: {{ lat }} / {{ lng }} </p>
+  
+  <button (click)="getForecast()">Get Forecast</button>
+  
+  <h1>Seven Day Forecast</h1>
+  
+  
+    <div *ngIf="forecast | async as f" class="columns">
+      <div *ngFor="let day of f.daily.data" class="column">
+  
+          <i [class]="weatherIcon(day.icon)"></i>
+          <h3>{{ day.time * 1000 | date: 'MMM d'  }}</h3>
+          <p>{{ day.summary }}</p>
+      </div>
+  </div> -->
+</ion-content>
